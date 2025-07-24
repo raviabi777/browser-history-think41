@@ -1,0 +1,77 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser History Simulator</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  </style>
+  <body>
+    <h1>Browser History Simulator</h1>
+    <div class="input-section">
+      <input type="text" id="url-input" placeholder="Enter URL" />
+      <button id="visitBtn">Visit Page</button>
+    </div>
+
+    <div class="controls">
+      <div>
+        <label for="historyLength">Show Last </label>
+        <input
+          type="number"
+          id="historyLength"
+          min="1"
+          value="5"
+          style="width: 50px"
+        />
+      </div>
+    </div>
+    <script>
+      let history = [];
+      const MAX_HISTORY_SIZE = 100; //PREVENT MEMORY ISSUES
+      const urlInput = document.getElementById('url-input');
+      const visitBtn = document.getElementById('visitBtn');
+      const historyLengthInput = document.getElementById('historyLength');
+      const historyList = document.getElementById('historyList'); //ASSUME THIS IS THE ID OF THE
+
+      visitBtn.addEventListener('click', visitPage);
+      historyLengthInput.addEventListener('input', updateHistoryList);
+      urlInput.addEventListener('input', updateHistoryList); //UPDATE HISTORY LIST WHEN URL CHANGES
+      //UPDATE HISTORY LIST WHEN URL CHANGES
+      function visitPage() {
+          const url = urlInput.value.trim();
+          if (url) {
+              history.push(url);
+              updateHistoryList();
+              if (history.length > MAX_HISTORY_SIZE) {
+                  history.shift();
+                  }
+                  }
+                  }
+      function renderHistory(){
+          const historyList = document.getElementById('historyList');
+          historyList.innerHTML = '';
+          history.forEach((url, index) => {
+              const li = document.createElement('li');
+              li.textContent = `${index + 1}. ${url}`;
+              historyList.appendChild(li);
+          }
+      }
+
+      function clearHistory(){
+          history = [];
+          renderHistory();
+
+      }
+      function formatTimestamp(date){
+          return date.toLocaleString();
+      }
+      renderHistory();
+    </script>
+  </body>
+</html>
